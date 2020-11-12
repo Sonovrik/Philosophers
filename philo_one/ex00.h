@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 16:16:56 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/10 21:35:09 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/12 18:34:04 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,21 @@ typedef struct		s_philo
 {
 	size_t			number;
 	int				number_eat;
+	long			start_time;
 	struct timeval	*last_meal;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
 	pthread_t		thread;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
 }					t_philo;
 
+typedef struct		s_looker
+{
+	t_philo			*philo;
+	size_t			number_philo;
+}					t_looker;
 
 
 int		ft_strlen(char *str);
