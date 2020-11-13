@@ -1,5 +1,5 @@
 NAME = philo_one
-SRCS = ex00.c utils.c print_status.c
+SRCS = philo_one.c utils.c print_status.c
 OBJS = $(SRCS:.c=.o)
 CC = gcc
 CFLAGS = -g -Wall -Wextra -Werror
