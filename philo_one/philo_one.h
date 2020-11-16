@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 12:45:32 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/13 20:41:48 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/16 20:28:32 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct		s_philo
 	int				time_to_eat;
 	int 			time_to_sleep;
 	struct timeval	*live_time;
+	size_t			start_sim;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
 	pthread_t		thread;

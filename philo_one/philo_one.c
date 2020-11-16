@@ -6,11 +6,29 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 12:55:26 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/13 22:01:02 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/16 21:39:49 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
+
+void		my_usleep(size_t time)
+{
+	struct timeval stamp;
+	size_t start;
+	size_t now;
+	
+	gettimeofday(&stamp, NULL);
+	start = stamp.tv_sec * 1000 + stamp.tv_usec / 1000;
+	now = start;
+	while (now - start < time / 1000)
+	{
+		usleep(100);
+		gettimeofday(&stamp, NULL);
+		now = stamp.tv_sec * 1000 + stamp.tv_usec / 1000;
+	}
+	return ;
+}
 
 int		init_args(t_observer **observer, char **argv, int argc)
 {
@@ -37,9 +55,9 @@ int		init_mutex(pthread_mutex_t **mutex, int len)
 {
 	int					i;
 
+	i = 0;
 	if ((*mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * len)) == NULL)
 		return (-1);
-	i = 0;
 	while (i < len)
 	{
 		if (pthread_mutex_init(&((*mutex)[i]), NULL))
@@ -61,9 +79,9 @@ int			init_philo(t_philo **philo, pthread_mutex_t *mutex, t_observer *observer)
 {
 	int					i;
 
+	i = 0;
 	if ((*philo = (t_philo *)malloc(sizeof(t_philo) * observer->number_philo)) == NULL)
 		return (-1);
-	i = 0;
 	while (i < observer->number_philo)
 	{
 		(*philo)[i].numbs_to_eat = observer->numbs_to_eat;
@@ -83,7 +101,7 @@ int			init_philo(t_philo **philo, pthread_mutex_t *mutex, t_observer *observer)
 void		*philo_live(void *var)
 {
 	t_philo				*philo;
-
+	
 	philo = (t_philo *)var;
 	while (1)
 	{
@@ -96,17 +114,15 @@ void		*philo_live(void *var)
 			gettimeofday(philo->live_time, NULL);
 			philo->numbs_to_eat--;
 			view_status(philo, EATING);
-			usleep(philo->time_to_eat *  1000);
-			pthread_mutex_unlock(philo->left);
-			view_status(philo, PUT_FORK_LEFT);
+			my_usleep(philo->time_to_eat * 1000);
 			pthread_mutex_unlock(philo->right);
 			view_status(philo, PUT_FORK_RIGHT);
+			pthread_mutex_unlock(philo->left);
+			view_status(philo, PUT_FORK_LEFT);
 			view_status(philo, SLEEPING);
-			usleep(philo->time_to_sleep * 1000);
+			my_usleep(philo->time_to_sleep * 1000);
 			view_status(philo, THINKING);
 		}
-		
-
 	}
 }
 
@@ -117,7 +133,9 @@ int			start_philo(t_philo *philo, int len)
 	i = 0;
 	while (i < len)
 	{
+		usleep(100);
 		gettimeofday(philo[i].live_time, NULL);
+		philo[i].start_sim = philo[i].live_time->tv_sec * 1000 + philo[i].live_time->tv_usec / 1000;
 		if (pthread_create(&(philo[i].thread), NULL, &philo_live, &(philo[i])))
 		{
 			while (--i > -1)
@@ -144,13 +162,13 @@ void		*checking_threads(void *var)
 		while (i < observer->number_philo)
 		{
 			gettimeofday(&time, NULL);
-			size_t tmp = (size_t)(time.tv_sec - observer->philo[i].live_time->tv_sec) * 1000;
-			size_t tmp2 = (size_t)((time.tv_usec - observer->philo[i].live_time->tv_usec) / 1000);
-			val_time = tmp + tmp2;
+			usleep(50);
+			val_time = (size_t)((time.tv_sec - observer->philo[i].live_time->tv_sec) * 1000
+				+ ((time.tv_usec - observer->philo[i].live_time->tv_usec) / 1000));
 			if (val_time > (size_t)observer->time_to_die)
 			{
 				died = 1;
-				printf("HE IS DIE O MY GOD !!!\n");
+				printf("HE IS DIE O MY GOD %d	%zu!!!\n", observer->philo[i].number, val_time);
 				return (NULL); //???
 			}
 			i++;
