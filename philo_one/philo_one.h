@@ -6,10 +6,9 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 12:45:32 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/16 20:28:32 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/17 21:40:23 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_ONE_H
 # define PHILO_ONE_H
@@ -24,37 +23,23 @@
 
 # define WRONG_ARGS -2
 # define MALLOC_ERROR 12
-
-
 # define SLEEPING 1001
 # define EATING 1002
 # define THINKING 1003
 # define DIED 1004
 # define TOOK_FORK_LEFT 1005
 # define TOOK_FORK_RIGHT 1006
-# define PUT_FORK_LEFT 1007
-# define PUT_FORK_RIGHT 1007
+# define EAT_END 1007
 
-
-int					died;
-
-typedef struct		s_args
-{
-	int				number_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int 			time_to_sleep;
-	int				numbs_to_eat;
-}					t_args;
+int					g_died;
 
 typedef struct		s_philo
 {
 	int				number;
-	int				numbs_to_eat;
-	size_t			last_meal;
-	int				time_to_eat;
-	int 			time_to_sleep;
-	struct timeval	*live_time;
+	size_t			numbs_to_eat;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	struct timeval	live_time;
 	size_t			start_sim;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
@@ -65,20 +50,32 @@ typedef struct		s_observer
 {
 	t_philo			*philo;
 	int				number_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int 			time_to_sleep;
-	int				numbs_to_eat;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			numbs_to_eat;
 	pthread_t		thread;
 }					t_observer;
 
+int					ft_strlen(char *str);
+void				ft_putstr_fd(char *str, int fd);
+int					ft_atoi(char *str, size_t *nbr);
+void				ft_putchar_fd(char c, int fd);
+char				*ft_putnbr_fd(size_t n);
 
-int		ft_strlen(char *str);
-void	ft_putstr_fd(char *str, int fd);
-int		ft_atoi(char *str, int *nbr);
-void	ft_putchar_fd(char c, int fd);
-char	*ft_putnbr_fd(size_t n);
-int		print_error(int error);
-void	view_status(t_philo *philo, int action);
+int					print_error(int error);
+void				view_status(t_philo *philo, int action);
+
+void				init_string(size_t val_time, size_t number, char *text);
+
+int					init_args(t_observer **observer, char **argv, int argc);
+int					init_mutex(pthread_mutex_t **mutex, int len);
+int					init_philo(t_philo **philo, pthread_mutex_t *mutex,
+						t_observer *observer);
+void				*philo_live(void *var);
+void				*checking_threads(void *var);
+int					start_philo(t_philo *philo, int len);
+int					observer_start(t_observer *observer, t_philo *philo);
+void				my_usleep(size_t time);
 
 #endif

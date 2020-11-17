@@ -6,18 +6,18 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 16:19:27 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/13 20:09:10 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/17 16:11:52 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	ft_putchar_fd(char c, int fd)
+void		ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-char	*ft_putnbr_fd(size_t n)
+char		*ft_putnbr_fd(size_t n)
 {
 	char	*nbr;
 	int		len;
@@ -27,12 +27,11 @@ char	*ft_putnbr_fd(size_t n)
 	len = 0;
 	if (n == 0)
 		len = 1;
-	else
-		while (tmp != 0)
-		{
-			tmp /= 10;
-			len++;
-		}
+	while (tmp != 0)
+	{
+		tmp /= 10;
+		len++;
+	}
 	len++;
 	if ((nbr = (char *)malloc(sizeof(char) * (len + 1))) == NULL)
 		return (NULL);
@@ -47,9 +46,9 @@ char	*ft_putnbr_fd(size_t n)
 	return (nbr);
 }
 
-int		ft_strlen(char *str)
+int			ft_strlen(char *str)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -57,13 +56,13 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-void	ft_putstr_fd(char *str, int fd)
+void		ft_putstr_fd(char *str, int fd)
 {
 	write(fd, str, ft_strlen(str));
 	return ;
 }
 
-int			ft_atoi(char *str, int *nbr)
+int			ft_atoi(char *str, size_t *nbr)
 {
 	if (*str == '\0')
 		return (-1);
@@ -71,6 +70,8 @@ int			ft_atoi(char *str, int *nbr)
 	while (*str >= '0' && *str <= '9')
 		*nbr = *nbr * 10 + (*str++ - 48);
 	if (*str != '\0')
+		return (-1);
+	if (nbr <= 0)
 		return (-1);
 	return (0);
 }
