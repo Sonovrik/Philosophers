@@ -6,11 +6,11 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 17:33:39 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/18 15:57:11 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:56:09 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 static void		*philo_live(void *var)
 {
@@ -21,9 +21,9 @@ static void		*philo_live(void *var)
 	{
 		if (philo->numbs_to_eat == 0 || g_died)
 			return (NULL);
-		pthread_mutex_lock(philo->left);
+		sem_wait(philo->sem);
 		view_status(philo, TOOK_FORK_LEFT);
-		pthread_mutex_lock(philo->right);
+		sem_wait(philo->sem);
 		view_status(philo, TOOK_FORK_RIGHT);
 		if (gettimeofday(&philo->live_time, NULL))
 		{
@@ -32,8 +32,8 @@ static void		*philo_live(void *var)
 		}
 		view_status(philo, EATING);
 		my_usleep(philo->time_to_eat);
-		pthread_mutex_unlock(philo->right);
-		pthread_mutex_unlock(philo->left);
+		sem_post(philo->sem);
+		sem_post(philo->sem);
 		philo->numbs_to_eat--;
 		view_status(philo, SLEEPING);
 		my_usleep(philo->time_to_sleep);

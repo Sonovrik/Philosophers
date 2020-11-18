@@ -6,11 +6,11 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 17:36:12 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/18 17:58:17 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:58:08 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		print_error(int error)
 {

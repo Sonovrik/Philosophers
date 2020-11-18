@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/13 12:55:26 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/18 16:19:52 by lmidori          ###   ########.fr       */
+/*   Created: 2020/11/18 22:00:04 by lmidori           #+#    #+#             */
+/*   Updated: 2020/11/18 22:04:14 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
-static int	free_all(t_observer *observer, pthread_mutex_t *mutex, int error)
+static int	free_all(t_observer *observer, sem_t *sem, int error)
 {
 	int				i;
 
@@ -24,13 +24,11 @@ static int	free_all(t_observer *observer, pthread_mutex_t *mutex, int error)
 		free(observer->philo);
 		observer->philo = NULL;
 	}
-	if (mutex)
+	if (sem)
 	{
-		i = -1;
-		while (++i < observer->number_philo)
-			pthread_mutex_destroy(&mutex[i]);
-		free(mutex);
-		mutex = NULL;
+		sem_unlink("/sem");
+		sem_close(sem);
+		sem = NULL;
 	}
 	if (observer)
 	{
@@ -52,12 +50,12 @@ static int	init_observer(t_observer **observer, int argc, char **argv)
 	return (0);
 }
 
-static int	init_all_threads(t_observer *observer, pthread_mutex_t *mutex,
+static int	init_all_threads(t_observer *observer, sem_t *sem,
 					t_philo **philo)
 {
-	if (init_mutex(&mutex, observer->number_philo))
+	if (init_sem(&sem, observer->number_philo))
 		return (MALLOC_ERROR);
-	if (init_philo(philo, mutex, observer))
+	if (init_philo(philo, sem, observer))
 		return (MALLOC_ERROR);
 	return (0);
 }
@@ -73,26 +71,26 @@ static int	start_threads(t_observer *observer, t_philo *philo)
 
 int			main(int argc, char **argv)
 {
-	t_philo			*philo;
-	pthread_mutex_t	*mutex;
-	t_observer		*observer;
-	int				ret;
+	t_philo		*philo;
+	sem_t		*sem;
+	t_observer	*observer;
+	int			ret;
 
-	mutex = NULL;
-	observer = NULL;
 	philo = NULL;
+	observer = NULL;
+	sem = NULL;
 	g_died = 0;
 	if ((ret = init_observer(&observer, argc, argv)))
-		return (free_all(observer, mutex, ret));
-	if ((ret = init_all_threads(observer, mutex, &philo)))
-		return (free_all(observer, mutex, ret));
+		return (free_all(observer, sem, ret));
+	if ((ret = init_all_threads(observer, sem, &philo)))
+		return (free_all(observer, sem, ret));
 	if ((ret = start_threads(observer, philo)))
-		return (free_all(observer, mutex, ret));
+		return (free_all(observer, sem, ret));
 	while (1)
 	{
 		if (g_died)
 		{
-			free_all(observer, mutex, 0);
+			free_all(observer, sem, 0);
 			return (1);
 		}
 	}
