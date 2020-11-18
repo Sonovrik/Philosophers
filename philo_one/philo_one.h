@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 12:45:32 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/17 21:40:23 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:53:07 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,18 @@ int					ft_strlen(char *str);
 void				ft_putstr_fd(char *str, int fd);
 int					ft_atoi(char *str, size_t *nbr);
 void				ft_putchar_fd(char c, int fd);
-char				*ft_putnbr_fd(size_t n);
 
 int					print_error(int error);
 void				view_status(t_philo *philo, int action);
+void				my_usleep(size_t time);
 
 void				init_string(size_t val_time, size_t number, char *text);
-
 int					init_args(t_observer **observer, char **argv, int argc);
 int					init_mutex(pthread_mutex_t **mutex, int len);
 int					init_philo(t_philo **philo, pthread_mutex_t *mutex,
 						t_observer *observer);
-void				*philo_live(void *var);
-void				*checking_threads(void *var);
+
 int					start_philo(t_philo *philo, int len);
 int					observer_start(t_observer *observer, t_philo *philo);
-void				my_usleep(size_t time);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 16:19:27 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/17 16:11:52 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:53:42 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,22 @@ void		ft_putchar_fd(char c, int fd)
 	write(fd, &c, 1);
 }
 
-char		*ft_putnbr_fd(size_t n)
+void		my_usleep(size_t time)
 {
-	char	*nbr;
-	int		len;
-	size_t	tmp;
+	struct timeval	stamp;
+	size_t			start;
+	size_t			now;
 
-	tmp = n;
-	len = 0;
-	if (n == 0)
-		len = 1;
-	while (tmp != 0)
+	gettimeofday(&stamp, NULL);
+	start = stamp.tv_sec * 1000 + stamp.tv_usec / 1000;
+	now = start;
+	while (now - start < time)
 	{
-		tmp /= 10;
-		len++;
+		usleep(100);
+		gettimeofday(&stamp, NULL);
+		now = stamp.tv_sec * 1000 + stamp.tv_usec / 1000;
 	}
-	len++;
-	if ((nbr = (char *)malloc(sizeof(char) * (len + 1))) == NULL)
-		return (NULL);
-	nbr[len] = '\0';
-	nbr[--len] = ' ';
-	tmp = n;
-	while (--len >= 0)
-	{
-		nbr[len] = tmp % 10 + 48;
-		tmp /= 10;
-	}
-	return (nbr);
+	return ;
 }
 
 int			ft_strlen(char *str)
