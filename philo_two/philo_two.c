@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 16:17:06 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/18 21:56:41 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/20 13:43:19 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int			main(int argc, char **argv)
 	observer = NULL;
 	sem = NULL;
 	g_died = 0;
+	g_count_die = 0;
 	if ((ret = init_observer(&observer, argc, argv)))
 		return (free_all(observer, sem, ret));
 	if ((ret = init_all_threads(observer, sem, &philo)))

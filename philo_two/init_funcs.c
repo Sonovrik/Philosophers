@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 17:03:22 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/18 21:55:52 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/20 22:23:53 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ int		init_args(t_observer **observer, char **argv, int argc)
 
 int		init_sem(sem_t **sem, int len)
 {
-	int					i;
-
-	i = 0;
 	sem_unlink("/sem");
 	if ((*sem = sem_open("/sem", O_CREAT, S_IRWXU, len)) == NULL)
 		return (-1);

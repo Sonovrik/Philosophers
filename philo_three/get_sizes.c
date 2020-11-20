@@ -6,11 +6,11 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 16:06:56 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/17 16:12:33 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/19 20:37:04 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 static int	get_size_value(size_t nbr)
 {

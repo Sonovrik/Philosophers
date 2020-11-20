@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 17:36:12 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/18 17:58:17 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/20 13:24:18 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		print_error(int error)
 	return (error);
 }
 
-void	view_status(t_philo *philo, int action)
+void	view_status(t_philo *philo, int action, size_t val_time2)
 {
 	struct timeval	time;
 	size_t			val_time;
@@ -43,7 +43,7 @@ void	view_status(t_philo *philo, int action)
 	else if (action == THINKING)
 		init_string(val_time, philo->number, "is thinking\n");
 	else if (action == DIED)
-		init_string(val_time, philo->number, "died\n");
+		init_string(val_time2, philo->number, "died\n");
 	else if (action == EAT_END)
-		init_string(val_time, philo->number, "numbs_to_eat ended\n");
+		ft_putstr_fd("All the philosophers have eaten\n", 1);
 }
