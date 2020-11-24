@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 17:33:39 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/20 22:20:25 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/24 19:12:14 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static int		check_death_thread(struct timeval time, t_philo *philo,
 	val_time = (size_t)((time.tv_sec -
 		philo->live_time.tv_sec) * 1000 + ((time.tv_usec -
 		philo->live_time.tv_usec) / 1000));
+	if (val_time == 1000)
+		return (0);
 	if (((time.tv_sec - philo->live_time.tv_sec) > 0
 		|| ((time.tv_sec - philo->live_time.tv_sec) >= 0
 		&& (time.tv_usec - philo->live_time.tv_usec) >= 0))
@@ -96,15 +98,18 @@ static void		*checking_threads(void *var)
 int				start_philo(t_philo *philo, int len)
 {
 	int				i;
+	struct timeval	time;
 
+	if (gettimeofday(&time, NULL))
+		return (-1);
 	i = 0;
 	while (i < len)
 	{
 		usleep(100);
+		philo[i].start_sim = time.tv_sec * 1000
+			+ time.tv_usec / 1000;
 		if (gettimeofday(&philo[i].live_time, NULL))
 			return (-1);
-		philo[i].start_sim = philo[i].live_time.tv_sec * 1000
-			+ philo[i].live_time.tv_usec / 1000;
 		if (pthread_create(&(philo[i].thread), NULL, &philo_live, &(philo[i])))
 			return (-1);
 		i++;

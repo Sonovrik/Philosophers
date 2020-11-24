@@ -6,31 +6,29 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 12:55:26 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/20 13:42:07 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/24 13:55:48 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-static int	free_all(t_observer *observer, pthread_mutex_t *mutex, int error)
+static int	free_all(t_observer *observer, pthread_mutex_t **mutex, int error)
 {
 	int				i;
 
 	if (observer && observer->philo != NULL)
 	{
-		i = -1;
-		while (i < observer->number_philo && observer->philo[++i].thread)
-			pthread_detach(observer->philo[i].thread);
+		usleep(10);
 		free(observer->philo);
 		observer->philo = NULL;
 	}
-	if (mutex)
+	if (*mutex)
 	{
 		i = -1;
 		while (++i < observer->number_philo)
-			pthread_mutex_destroy(&mutex[i]);
-		free(mutex);
-		mutex = NULL;
+			pthread_mutex_destroy(&(*mutex)[i]);
+		free(*mutex);
+		*mutex = NULL;
 	}
 	if (observer)
 	{
@@ -52,12 +50,12 @@ static int	init_observer(t_observer **observer, int argc, char **argv)
 	return (0);
 }
 
-static int	init_all_threads(t_observer *observer, pthread_mutex_t *mutex,
+static int	init_all_threads(t_observer *observer, pthread_mutex_t **mutex,
 					t_philo **philo)
 {
-	if (init_mutex(&mutex, observer->number_philo))
+	if (init_mutex(mutex, observer->number_philo))
 		return (MALLOC_ERROR);
-	if (init_philo(philo, mutex, observer))
+	if (init_philo(philo, *mutex, observer))
 		return (MALLOC_ERROR);
 	return (0);
 }
@@ -84,16 +82,16 @@ int			main(int argc, char **argv)
 	g_died = 0;
 	g_count_die = 0;
 	if ((ret = init_observer(&observer, argc, argv)))
-		return (free_all(observer, mutex, ret));
-	if ((ret = init_all_threads(observer, mutex, &philo)))
-		return (free_all(observer, mutex, ret));
+		return (free_all(observer, &mutex, ret));
+	if ((ret = init_all_threads(observer, &mutex, &philo)))
+		return (free_all(observer, &mutex, ret));
 	if ((ret = start_threads(observer, philo)))
-		return (free_all(observer, mutex, ret));
+		return (free_all(observer, &mutex, ret));
 	while (1)
 	{
 		if (g_died)
 		{
-			free_all(observer, mutex, 0);
+			free_all(observer, &mutex, 0);
 			return (1);
 		}
 	}

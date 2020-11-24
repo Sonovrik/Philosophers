@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 17:36:12 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/20 23:01:22 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/24 20:06:52 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,12 @@ int		print_error(int error)
 	return (error);
 }
 
-void	view_status(t_observer *observer, int number, int action,
-					size_t val_time2)
+void	view_status(t_observer *observer, int number, int action)
 {
 	struct timeval	time;
 	size_t			val_time;
 
-	sem_wait(sem3);
-	if (g_died && action != DIED && action != EAT_END)
-		return ;
+	sem_wait(g_sem_view);
 	if (gettimeofday(&time, NULL))
 		return ;
 	val_time = (size_t)(time.tv_sec * 1000
@@ -45,8 +42,9 @@ void	view_status(t_observer *observer, int number, int action,
 	else if (action == THINKING)
 		init_string(val_time, number, "is thinking\n");
 	else if (action == DIED)
-		init_string(val_time2, number, "died\n");
+		init_string(val_time, number, "died\n");
 	else if (action == EAT_END)
 		ft_putstr_fd("All the philosophers have eaten\n", 1);
-	sem_post(sem3);
+	if (action != DIED)
+		sem_post(g_sem_view);
 }

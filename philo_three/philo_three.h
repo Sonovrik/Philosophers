@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:33:51 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/20 22:40:29 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/24 20:07:02 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <semaphore.h>
 # include <sys/time.h>
 # include <string.h>
-#include <signal.h>
+# include <signal.h>
 
 # define WRONG_ARGS -2
 # define MALLOC_ERROR 12
@@ -32,24 +32,10 @@
 # define TOOK_FORK_RIGHT 1006
 # define EAT_END 1007
 
-int					g_died;
-sem_t				*sem3;
-
-// typedef struct		s_philo
-// {
-// 	int				number;
-// 	size_t			numbs_to_eat;
-// 	size_t			time_to_eat;
-// 	size_t			time_to_sleep;
-// 	struct timeval	live_time;
-// 	size_t			start_sim;
-// 	sem_t			*sem;
-// 	pthread_t		thread;
-// }					t_philo;
+sem_t				*g_sem_view;
 
 typedef struct		s_observer
 {
-	// t_philo			*philo;
 	int				number_philo;
 	int				number;
 	size_t			time_to_die;
@@ -60,7 +46,6 @@ typedef struct		s_observer
 	pid_t			*pid;
 	pthread_t		thread;
 	size_t			start_sim;
-	sem_t			*sem2;
 }					t_observer;
 
 int					ft_strlen(char *str);
@@ -69,17 +54,17 @@ int					ft_atoi(char *str, size_t *nbr);
 void				ft_putchar_fd(char c, int fd);
 
 int					print_error(int error);
-void				view_status(t_observer *observer, int number, int action,
-								size_t val_time2);
+void				view_status(t_observer *observer, int number, int action);
 void				my_usleep(size_t time);
 
 void				init_string(size_t val_time, size_t number, char *text);
 int					init_args(t_observer **observer, char **argv, int argc);
-// int					init_sem(sem_t **sem, int len);
-// int					init_philo(t_philo **philo, sem_t *sem,
-// 						t_observer *observer);
+int					init_observer(t_observer **observer, int argc, char **argv);
+int					init_sem(sem_t **sem, int len);
+int					init_processes(t_observer *observer, sem_t *sem);
 
-// int					start_philo(t_philo *philo, int len);
-// int					observer_start(t_observer *observer, t_philo *philo);
+int					philo_live(t_observer *observer, sem_t *sem);
+void				*check_process(void *var);
+int					wait_exit(t_observer *observer);
 
 #endif

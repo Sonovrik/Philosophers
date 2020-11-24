@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 12:45:32 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/20 13:17:14 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/24 13:14:53 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int					ft_atoi(char *str, size_t *nbr);
 void				ft_putchar_fd(char c, int fd);
 
 int					print_error(int error);
-void				view_status(t_philo *philo, int action, size_t val_time2);
+void				view_status(t_philo *philo, int action);
 void				my_usleep(size_t time);
 
 void				init_string(size_t val_time, size_t number, char *text);

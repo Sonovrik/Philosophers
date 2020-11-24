@@ -6,7 +6,7 @@
 /*   By: lmidori <lmidori@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 16:06:56 by lmidori           #+#    #+#             */
-/*   Updated: 2020/11/17 16:12:33 by lmidori          ###   ########.fr       */
+/*   Updated: 2020/11/24 13:49:14 by lmidori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,5 @@ void		init_string(size_t val_time, size_t number, char *text)
 	str_text(&str[i], text);
 	ft_putstr_fd(str, 1);
 	free(str);
+	str = NULL;
 }
