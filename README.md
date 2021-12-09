@@ -11,6 +11,8 @@ Eating is not limited by the remaining amounts of spaghetti or stomach space; an
 
 The problem is how to design a discipline of behavior (a concurrent algorithm) such that no philosopher will starve; i.e., each can forever continue to alternate between eating and thinking, assuming that no philosopher can know when others may want to eat or think.
 
+Read more about problem here: https://en.wikipedia.org/wiki/Dining_philosophers_problem
+
 ### Run the project
 make and run ./philo_number , where you should past one, two or three instead of number with arguments, where:
 First argument is number of philosophers;
